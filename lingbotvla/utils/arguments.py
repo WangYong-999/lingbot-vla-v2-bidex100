@@ -491,6 +491,11 @@ class TrainingArguments:
         default=1,
         metadata={"help": "Number of epochs between two checkpoint saves."},
     )
+    save_milestones: Optional[List[int]] = field(
+        default=None,
+        metadata={"help": "List of global step values at which to save checkpoints (e.g. --train.save_milestones 5000 10000 30000 60000 120000). "
+                          "When set, takes precedence over save_steps (periodic saving is disabled)."},
+    )
     save_hf_weights: bool = field(
         default=True,
         metadata={"help": "Save the huggingface format weights to the last checkpoint dir."},

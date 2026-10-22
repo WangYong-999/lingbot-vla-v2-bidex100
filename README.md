@@ -1,3 +1,5 @@
+> **BiDex-100 integration:** see [BIDEX100.md](BIDEX100.md) for environment setup, training and evaluation, or the [Document page](https://bidex-100.github.io/BiDex-100/document.html).
+
 <h1 align="center">LingBot-VLA 2.0: From Foundation to Application</h1>
 
 <p align="center">

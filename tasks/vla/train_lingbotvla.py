@@ -55,6 +55,19 @@ logger = helper.create_logger(__name__)
 # except Exception as e:
 #     logger.info_rank0(f"Failed to import aistudio_tracking: {repr(e)}.")
 
+def _should_save_at_step(args, global_step: int) -> bool:
+    """Determine whether to save a checkpoint at the given global step.
+
+    Supports two modes:
+    1. save_milestones (preferred): save at specific step values, e.g. [5000, 10000, 30000].
+    2. save_steps (fallback): periodic save every save_steps (original behavior).
+    """
+    if args.train.save_milestones:
+        return global_step in args.train.save_milestones
+    if args.train.save_steps:
+        return global_step % args.train.save_steps == 0
+    return False
+
 def get_param_groups(model: "torch.nn.Module", default_lr: float, vit_lr: float):
     vit_params, other_params = [], []
     for name, param in model.named_parameters():
@@ -1082,7 +1095,7 @@ def main():
                                     current_pred_feats=future_video_current_preds,
                                 )
 
-            if args.train.save_steps and global_step % args.train.save_steps == 0:
+            if _should_save_at_step(args, global_step):
                 helper.empty_cache()
                 save_checkpoint_path = os.path.join(args.train.save_checkpoint_path, f"global_step_{global_step}")
                 
@@ -1133,7 +1146,7 @@ def main():
         start_step = 0
         helper.print_device_mem_info(f"VRAM usage after epoch {epoch + 1}")
         if reached_max_steps:
-            already_saved = args.train.save_steps and global_step % args.train.save_steps == 0
+            already_saved = _should_save_at_step(args, global_step)
             if not already_saved:
                 helper.empty_cache()
                 save_checkpoint_path = os.path.join(args.train.save_checkpoint_path, f"global_step_{global_step}")

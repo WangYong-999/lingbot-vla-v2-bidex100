@@ -1,0 +1,31 @@
+# LingBot-VLA v2 robot config for BiDex-100 qc3 — JOINT mode, dual-arm 58D.
+
+states:
+  - observation.state.arm.position:
+      origin_keys:
+        - observation.states.arm_joint_position: { start: 0, end: 14 }
+  - observation.state.hand.position:
+      origin_keys:
+        - observation.states.dex_joint_position: { start: 0, end: 44 }
+
+actions:
+  - action.arm.position:
+      origin_keys:
+        - actions.arm_joint_position: { start: 0, end: 14 }
+      subtract_state: True
+      relative_type: subtract
+  - action.hand.position:
+      origin_keys:
+        - actions.dex_joint_position: { start: 0, end: 44 }
+      subtract_state: True
+      relative_type: subtract
+
+images:
+  - observation.images.head:
+      origin_keys: observation.images.head_color
+  - observation.images.left_wrist:
+      origin_keys: observation.images.left_wrist_color
+  - observation.images.right_wrist:
+      origin_keys: observation.images.right_wrist_color
+
+norm_stats: assets/norm_stats/bidex_joint.json

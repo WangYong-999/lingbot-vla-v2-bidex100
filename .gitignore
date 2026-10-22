@@ -1,0 +1,4 @@
+
+# Generated BiDex-100 training inputs (contain local paths).
+assets/training_data/bidex_*.txt
+configs/vla/bidex/local_*.yaml

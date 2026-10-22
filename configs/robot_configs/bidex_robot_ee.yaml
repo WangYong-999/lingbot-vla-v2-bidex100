@@ -1,0 +1,29 @@
+# LingBot-VLA v2 robot config for BiDex-100 qc3 — ROBOT_EE mode, dual-arm 58D.
+
+states:
+  - observation.state.end.position:
+      origin_keys:
+        - observation.states.abs_end_effector: { start: 0, end: 14 }
+  - observation.state.hand.position:
+      origin_keys:
+        - observation.states.dex_joint_position: { start: 0, end: 44 }
+
+actions:
+  - action.end.position:
+      origin_keys:
+        - actions.abs_end_effector: { start: 0, end: 14 }
+      subtract_state: False
+  - action.hand.position:
+      origin_keys:
+        - actions.dex_joint_position: { start: 0, end: 44 }
+      subtract_state: False
+
+images:
+  - observation.images.head:
+      origin_keys: observation.images.head_color
+  - observation.images.left_wrist:
+      origin_keys: observation.images.left_wrist_color
+  - observation.images.right_wrist:
+      origin_keys: observation.images.right_wrist_color
+
+norm_stats: assets/norm_stats/bidex_robot_ee.json
